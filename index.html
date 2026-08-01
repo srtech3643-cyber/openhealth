@@ -4,14 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> OpenHealth  | Disease Prediction System</title>
+    <title>OpenHealth | Next-Gen AI Disease Diagnostic System</title>
 
     <link rel="stylesheet" href="style.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 
@@ -21,13 +20,12 @@
     <div class="blur blur-one"></div>
     <div class="blur blur-two"></div>
     <div class="blur blur-three"></div>
-    <div class="particles"></div>
 
     <header>
         <nav class="navbar">
             <div class="logo">
                 <i class="fa-solid fa-heart-pulse"></i>
-                <span> OpenHealth </span>
+                <span>OpenHealth</span>
             </div>
 
             <ul class="nav-links">
@@ -43,7 +41,7 @@
                 Start Diagnosis
             </a>
 
-            <div class="menu-btn">
+            <div class="menu-btn" id="menuBtn">
                 <i class="fa-solid fa-bars"></i>
             </div>
         </nav>
@@ -53,7 +51,7 @@
         <div class="hero-left">
             <div class="hero-badge">
                 <i class="fa-solid fa-microchip"></i>
-               Healthcare Platform
+                AI Healthcare Platform
             </div>
 
             <h1>
@@ -62,9 +60,9 @@
             </h1>
 
             <p>
-            > OpenHealth System analyzes your symptoms using a trained
+                OpenHealth System analyzes your symptoms using a trained
                 Random Forest Machine Learning model and provides disease
-                predictions, precautions, diet recommendations and
+                predictions, precautions, diet recommendations, and
                 specialist suggestions within seconds.
             </p>
 
@@ -99,7 +97,7 @@
                 <div class="doctor-image">
                     <i class="fa-solid fa-user-doctor"></i>
                 </div>
-                <h2> Medical Assistant</h2>
+                <h2>Medical AI Assistant</h2>
                 <p>
                     Intelligent Disease Prediction
                     Powered by Machine Learning
@@ -138,17 +136,12 @@
             <div class="floating-card card-three">
                 <i class="fa-solid fa-brain"></i>
                 <div>
-        
-                    <p>Random Forest ML</p>
+                    <h4>RF ML</h4>
+                    <p>Model Active</p>
                 </div>
             </div>
         </div>
     </section>
-
-    <div class="scroll-indicator">
-        <span>Scroll Down</span>
-        <i class="fa-solid fa-chevron-down"></i>
-    </div>
 
     <section class="stats-section" id="features">
         <div class="section-header">
@@ -156,9 +149,9 @@
                 <i class="fa-solid fa-chart-line"></i>
                 Live Platform Statistics
             </span>
-            <h2> Healthcare at a Glance</h2>
+            <h2>Healthcare at a Glance</h2>
             <p>
-                Built using Machine Learning, Flask, Python and Data Science to
+                Built using Machine Learning, Flask, Python, and Data Science to
                 provide fast and intelligent disease prediction.
             </p>
         </div>
@@ -184,7 +177,7 @@
                 <div class="icon-box">
                     <i class="fa-solid fa-brain"></i>
                 </div>
-                <h3>ML</h3>
+                <h3>RF ML</h3>
                 <p>Random Forest Model</p>
             </div>
 
@@ -202,7 +195,7 @@
         <div class="section-header">
             <span class="section-tag">
                 <i class="fa-solid fa-shield-heart"></i>
-                Why Choose> OpenHealth 
+                Why Choose OpenHealth
             </span>
             <h2>Advanced Healthcare Platform</h2>
             <p>
@@ -245,7 +238,7 @@
             <div class="feature-card">
                 <div class="feature-icon"><i class="fa-solid fa-lock"></i></div>
                 <h3>Privacy Focused</h3>
-                <p>All symptom analysis happens locally through your Flask backend without storing personal medical information.</p>
+                <p>All symptom analysis happens securely through your Flask backend without storing personal medical information.</p>
             </div>
         </div>
     </section>
@@ -258,11 +251,10 @@
             </span>
             <h2>Disease Prediction System</h2>
             <p>
-            > OpenHealth is a Machine Learning based healthcare platform
+                OpenHealth is a Machine Learning based healthcare platform
                 that predicts diseases using user-selected symptoms.
                 It combines Python, Flask, Random Forest, Pandas,
-                Scikit-learn and an interactive web interface to provide
-                meaningful healthcare recommendations.
+                Scikit-learn, and an interactive cyber web interface.
             </p>
 
             <div class="about-list">
@@ -289,43 +281,42 @@
         <div class="section-header">
             <span class="section-tag">
                 <i class="fa-solid fa-microchip"></i>
-                System Disease Prediction
+                System Disease Diagnostic HUD
             </span>
             <h2>Predict Your Disease</h2>
             <p>
                 Search and select your symptoms below. Our system will
-                analyze them and predict the most probable disease.
+                analyze them and predict the most probable condition.
             </p>
         </div>
 
         <div class="prediction-container">
             <div class="prediction-left">
-                <label for="symptomSearch">Search Symptoms</label>
+                <label for="symptomSearch" style="color: var(--cyber-cyan); font-weight: 600; font-size: 14px;">SEARCH SYMPTOMS HUD</label>
 
-<div class="search-box">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <input type="text" id="symptomSearch" placeholder="Type symptom name...">
-</div>
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="symptomSearch" placeholder="Type symptom (e.g. fever, headache, itching)...">
+                </div>
 
-<p class="prediction-note">
-    ⚠️ Please select at least <strong>3 symptoms</strong> for a more accurate disease prediction.
-</p>
+                <p class="prediction-note">
+                    ⚠️ Please select at least <strong>3 symptoms</strong> for an accurate diagnostic match.
+                </p>
 
-<h3>Selected Symptoms</h3>
-                <div id="selectedSymptoms" class="selected-symptoms">
-                    </div>
+                <h3 style="font-size: 16px; color: #fff; margin-bottom: 10px;">Selected Symptoms</h3>
+                <div id="selectedSymptoms" class="selected-symptoms"></div>
 
-                <div id="symptomList" class="symptom-list">
-                    </div>
+                <h3 style="font-size: 16px; color: #fff; margin-bottom: 10px;">Available Database Symptoms</h3>
+                <div id="symptomList" class="symptom-list"></div>
 
                 <div class="button-group">
                     <button id="predictBtn" class="predict-btn">
                         <i class="fa-solid fa-brain"></i>
-                        Predict Disease
+                        Run ML Prediction
                     </button>
                     <button id="resetBtn" class="reset-btn">
                         <i class="fa-solid fa-rotate-left"></i>
-                        Reset
+                        Reset HUD
                     </button>
                 </div>
             </div>
@@ -333,83 +324,82 @@
             <div class="prediction-right">
                 <div class="prediction-info">
                     <i class="fa-solid fa-circle-info"></i>
-                    <h3>How Prediction Works?</h3>
+                    <h3>How AI Analysis Works</h3>
                     <p>
                         Our Random Forest Machine Learning model compares
-                        your selected symptoms with thousands of medical
-                        records and predicts the most probable disease.
+                        your selected symptoms with thousands of trained medical vectors
+                        to identify the matching condition.
                     </p>
                 </div>
 
                 <div class="prediction-info">
                     <i class="fa-solid fa-shield-heart"></i>
-                    <h3>Recommendation</h3>
+                    <h3>Comprehensive Output</h3>
                     <p>
-                        Along with disease prediction, you'll receive precautions,
-                        diet suggestions, and the recommended doctor.
+                        Along with disease prediction, you'll receive safety precautions,
+                        diet suggestions, and specialist doctor recommendations.
                     </p>
                 </div>
             </div>
         </div>
     </section>
 
-<section class="loading-section" id="loadingSection">
-    <div class="loader-card">
-        <div class="loader"></div>
-        <h2 id="loadingText">Analyzing Symptoms...</h2>
-        <div class="loading-steps">
-            <p id="step1">⏳ Collecting Selected Symptoms...</p>
-            <p id="step2">⏳ Waiting...</p>
-            <p id="step3">⏳ Waiting...</p>
-            <p id="step4">⏳ Waiting...</p>
+    <section class="loading-section" id="loadingSection">
+        <div class="loader-card">
+            <div class="loader"></div>
+            <h2 id="loadingText" style="color: var(--cyber-cyan); margin-bottom: 20px;">Analyzing Medical Vectors...</h2>
+            <div class="loading-steps" style="display: flex; flex-direction: column; gap: 10px; color: var(--text-secondary); font-size: 14px;">
+                <p id="step1">⚡ [1/4] Scanning Symptom Neural Grid...</p>
+                <p id="step2">⏳ [2/4] Waiting...</p>
+                <p id="step3">⏳ [3/4] Waiting...</p>
+                <p id="step4">⏳ [4/4] Waiting...</p>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
     <section class="result-section" id="resultSection">
         <div class="section-header">
             <span class="section-tag">
                 <i class="fa-solid fa-square-poll-vertical"></i>
-                Prediction Report
+                Diagnostic HUD Output
             </span>
             <h2>Disease Prediction Report</h2>
         </div>
 
         <div class="result-card disease-card">
-    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
-        <div>
-            <i class="fa-solid fa-virus"></i>
-            <h3>Predicted Disease</h3>
-        </div>
-        <div class="confidence-badge" id="confidenceBadge" style="display: none;">
-            <i class="fa-solid fa-chart-line"></i>
-            <span id="confidenceValue">0%</span> Confidence
-        </div>
-    </div>
-    <p id="diseaseName">Waiting...</p>
+            <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+                <div>
+                    <i class="fa-solid fa-virus"></i>
+                    <h3>Predicted Disease</h3>
+                </div>
+                <div class="confidence-badge" id="confidenceBadge" style="display: none;">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span id="confidenceValue">0%</span> Confidence
+                </div>
+            </div>
+            <p id="diseaseName" style="font-size: 24px; color: var(--cyber-cyan); font-weight: 700; margin-top: 10px;">Waiting...</p>
         </div>
 
-            <div class="result-card doctor-card-result">
-                <i class="fa-solid fa-user-doctor"></i>
-                <h3>Recommended Doctor</h3>
-                <p id="doctorName">-</p>
-            </div>
+        <div class="result-card doctor-card-result">
+            <i class="fa-solid fa-user-doctor"></i>
+            <h3>Recommended Specialist</h3>
+            <p id="doctorName">-</p>
+        </div>
 
-            <div class="result-card diet-card">
-                <i class="fa-solid fa-bowl-food"></i>
-                <h3>Diet Recommendation</h3>
-                <p id="dietPlan">-</p>
-            </div>
+        <div class="result-card diet-card">
+            <i class="fa-solid fa-bowl-food"></i>
+            <h3>Dietary Guidance</h3>
+            <p id="dietPlan">-</p>
+        </div>
 
-            <div class="result-card description-card">
-                <i class="fa-solid fa-file-medical"></i>
-                <h3>Disease Description</h3>
-                <p id="description">-</p>
-            </div>
+        <div class="result-card description-card">
+            <i class="fa-solid fa-file-medical"></i>
+            <h3>Disease Analysis Brief</h3>
+            <p id="description">-</p>
         </div>
 
         <div class="precautions-card">
-            <h2>Precautions</h2>
+            <h2>Safety Precautions</h2>
             <ul id="precautionsList"></ul>
         </div>
     </section>
@@ -421,36 +411,36 @@
                 Frequently Asked Questions
             </span>
             <h2>Have Questions?</h2>
-            <p>Everything you need to know about> OpenHealth </p>
+            <p>Everything you need to know about OpenHealth HUD</p>
         </div>
 
         <div class="faq-container">
             <div class="faq-card">
-                <h3>Is this website a replacement for doctors?</h3>
-                <p>No.> OpenHealth is designed only to assist users by predicting possible diseases based on symptoms. Always consult a qualified healthcare professional for medical advice.</p>
+                <h3>Is this website a replacement for certified doctors?</h3>
+                <p>No. OpenHealth is built as an intelligent assistant to offer quick analytical insights based on symptom models. Always consult a licensed healthcare professional for official diagnosis and treatment.</p>
             </div>
 
             <div class="faq-card">
                 <h3>How does disease prediction work?</h3>
-                <p>Our system uses a trained Random Forest Machine Learning model to analyze selected symptoms and predict the most probable disease.</p>
+                <p>Our backend uses a trained Random Forest Machine Learning model to evaluate vector overlaps against 41 common medical conditions.</p>
             </div>
 
             <div class="faq-card">
-                <h3>What information do I receive?</h3>
-                <p>You'll receive the predicted disease, description, precautions, recommended doctor, and diet suggestions.</p>
+                <h3>What information is generated in the report?</h3>
+                <p>You receive the predicted condition, description, preventive action items, medical specialist recommendation, and dietary guidelines.</p>
             </div>
         </div>
     </section>
 
     <section class="contact-section" id="contact">
         <div class="contact-card">
-            <h2>Contact Us</h2>
-            <p>Have questions or suggestions? We'd love to hear from you.</p>
+            <h2>Contact System Admin</h2>
+            <p>Have questions or feedback? Connect with our support matrix.</p>
 
             <div class="contact-grid">
                 <div>
                     <i class="fa-solid fa-envelope"></i>
-                    <p>support>srtech3643@gmail.com</p>
+                    <p>support@openhealth.io</p>
                 </div>
                 <div>
                     <i class="fa-solid fa-phone"></i>
@@ -458,7 +448,7 @@
                 </div>
                 <div>
                     <i class="fa-solid fa-location-dot"></i>
-                    <p>India</p>
+                    <p>India Matrix Node</p>
                 </div>
             </div>
         </div>
@@ -468,12 +458,12 @@
         <div class="footer-container">
             <div class="footer-logo">
                 <i class="fa-solid fa-heart-pulse"></i>
-                <h2> OpenHealth </h2>
-                <p> Disease Prediction System using Machine Learning and Flask.</p>
+                <h2>OpenHealth</h2>
+                <p>Next-Gen Disease Diagnostic Engine powered by Random Forest ML & Flask backend.</p>
             </div>
 
             <div class="footer-links">
-                <h3>Quick Links</h3>
+                <h3>Quick Nav</h3>
                 <ul>
                     <li><a href="#home">Home</a></li>
                     <li><a href="#features">Features</a></li>
@@ -484,19 +474,17 @@
             </div>
 
             <div class="footer-tech">
-                <h3>Technologies</h3>
+                <h3>Tech Stack</h3>
                 <ul>
-                    <li>Python</li>
-                    <li>Flask</li>
-                    <li>Random Forest</li>
-                    <li>Pandas</li>
-                    <li>Scikit-learn</li>
-                    <li>HTML • CSS • JavaScript</li>
+                    <li>Python & Flask</li>
+                    <li>Random Forest ML</li>
+                    <li>Pandas & Scikit-Learn</li>
+                    <li>Cyberpunk Modern CSS Engine</li>
                 </ul>
             </div>
 
             <div class="footer-social">
-                <h3>Follow Us</h3>
+                <h3>Connect Node</h3>
                 <div class="social-icons">
                     <a href="#"><i class="fab fa-github"></i></a>
                     <a href="#"><i class="fab fa-linkedin"></i></a>
@@ -507,10 +495,11 @@
         </div>
         <hr>
         <p class="copyright">
-            © 2026> OpenHealth | Disease Prediction System | Developed by SR Tech </p>
+            © 2026 OpenHealth | Cyber AI Diagnostic System
+        </p>
     </footer>
 
-    <button id="scrollTop">
+    <button id="scrollTop" title="Return to top HUD">
         <i class="fa-solid fa-arrow-up"></i>
     </button>
 

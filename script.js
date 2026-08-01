@@ -1,11 +1,9 @@
 /* ==========================================================================
-   MEDIPREDICT - INTERACTIVE LOGIC & FLASK API INTEGRATION
+   OPENHEALTH | CYBER HUD CONTROLLER & FLASK API INTEGRATION
    ========================================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
-    // ----------------------------------------------------------------------
-    // 1. DATA STORES & STATE
-    // ----------------------------------------------------------------------
+    // 1. DATABASE & STATE MANAGEMENT
     const availableSymptoms = [
         "itching", "skin_rash", "nodal_skin_eruptions", "continuous_sneezing", "shivering",
         "chills", "joint_pain", "stomach_pain", "acidity", "ulcers_on_tongue", "muscle_wasting",
@@ -40,9 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let selectedSymptomsList = [];
 
-    // ----------------------------------------------------------------------
     // 2. DOM ELEMENTS
-    // ----------------------------------------------------------------------
     const symptomSearchInput = document.getElementById("symptomSearch");
     const symptomListContainer = document.getElementById("symptomList");
     const selectedSymptomsContainer = document.getElementById("selectedSymptoms");
@@ -52,29 +48,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const loadingSection = document.getElementById("loadingSection");
     const resultSection = document.getElementById("resultSection");
 
-    const diseaseNameElem = document.getElementById("predictedDisease") || document.getElementById("diseaseName");
-    const doctorNameElem = document.getElementById("recommendedDoctor") || document.getElementById("doctorName");
-    const dietPlanElem = document.getElementById("recommendedDiet") || document.getElementById("dietPlan");
-    const descriptionElem = document.getElementById("diseaseDescription") || document.getElementById("description");
+    const diseaseNameElem = document.getElementById("diseaseName");
+    const doctorNameElem = document.getElementById("doctorName");
+    const dietPlanElem = document.getElementById("dietPlan");
+    const descriptionElem = document.getElementById("description");
     const precautionsListElem = document.getElementById("precautionsList");
 
-    const menuBtn = document.querySelector(".menu-btn");
+    const menuBtn = document.getElementById("menuBtn");
     const navLinks = document.querySelector(".nav-links");
     const scrollTopBtn = document.getElementById("scrollTop");
 
-    // ----------------------------------------------------------------------
-    // 3. RENDER & FILTER SYMPTOMS
-    // ----------------------------------------------------------------------
+    // 3. SYMPTOM RENDERING & HUD INTERACTIONS
     function renderSymptomList(filterText = "") {
         if (!symptomListContainer) return;
         symptomListContainer.innerHTML = "";
 
         const filtered = availableSymptoms.filter(symptom =>
-            symptom.toLowerCase().replace(/_/g, " ").includes(filterText.toLowerCase())
+            symptom.toLowerCase().replace(/_/g, " ").includes(filterText.toLowerCase().trim())
         );
 
         if (filtered.length === 0) {
-            symptomListContainer.innerHTML = `<span style="color: var(--text-muted); font-size: 0.9rem; padding: 0.5rem;">No matching symptoms found.</span>`;
+            symptomListContainer.innerHTML = `<span style="color: var(--cyber-magenta); font-size: 0.9rem; padding: 0.5rem;">⚠️ No matching symptoms found in neural database.</span>`;
             return;
         }
 
@@ -83,11 +77,13 @@ document.addEventListener("DOMContentLoaded", () => {
             const chip = document.createElement("button");
             chip.type = "button";
             chip.className = `symptom-item ${isSelected ? "active" : ""}`;
-            chip.innerText = formatSymptomName(symptom);
+            chip.innerHTML = `<i class="fa-solid ${isSelected ? 'fa-check' : 'fa-plus'}"></i> ${formatSymptomName(symptom)}`;
 
             chip.addEventListener("click", () => {
                 if (!isSelected) {
                     addSymptom(symptom);
+                } else {
+                    removeSymptom(symptom);
                 }
             });
 
@@ -100,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
         selectedSymptomsContainer.innerHTML = "";
 
         if (selectedSymptomsList.length === 0) {
-            selectedSymptomsContainer.innerHTML = `<span style="color: var(--text-muted); font-size: 0.85rem;">No symptoms selected yet.</span>`;
+            selectedSymptomsContainer.innerHTML = `<span style="color: var(--text-secondary); font-size: 0.85rem;">No symptoms selected. Choose at least 3 from below.</span>`;
             return;
         }
 
@@ -109,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
             chip.className = "symptom-chip";
             chip.innerHTML = `
                 <span>${formatSymptomName(symptom)}</span>
-                <span class="remove-chip">&times;</span>
+                <i class="fa-solid fa-xmark remove-chip" style="cursor: pointer; margin-left: 8px;"></i>
             `;
 
             chip.querySelector(".remove-chip").addEventListener("click", () => {
@@ -145,13 +141,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // ----------------------------------------------------------------------
-    // 4. PREDICTION LOGIC & API INTEGRATION
-    // ----------------------------------------------------------------------
+    // 4. ML DIAGNOSIS & FLASK API RUNNER
     if (predictBtn) {
         predictBtn.addEventListener("click", async () => {
             if (selectedSymptomsList.length < 3) {
-                alert("Please select at least 3 symptoms for a more accurate disease prediction.");
+                alert("⚠️ Diagnostic Minimum Requirement: Please select at least 3 symptoms.");
                 return;
             }
 
@@ -165,15 +159,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 const s3 = document.getElementById("step3");
                 const s4 = document.getElementById("step4");
 
-                if (s1) s1.innerHTML = "⏳ Collecting Selected Symptoms...";
-                if (s2) s2.innerHTML = "⏳ Waiting...";
-                if (s3) s3.innerHTML = "⏳ Waiting...";
-                if (s4) s4.innerHTML = "⏳ Waiting...";
+                if (s1) s1.innerHTML = "⚡ [1/4] Scanning Symptom Neural Grid...";
+                if (s2) s2.innerHTML = "⏳ [2/4] Waiting...";
+                if (s3) s3.innerHTML = "⏳ [3/4] Waiting...";
+                if (s4) s4.innerHTML = "⏳ [4/4] Waiting...";
 
-                setTimeout(() => { if (s1) s1.innerHTML = "✅ Symptoms Collected"; }, 500);
-                setTimeout(() => { if (s2) s2.innerHTML = "✅ Comparing with 41 Diseases"; }, 1200);
-                setTimeout(() => { if (s3) s3.innerHTML = "✅ Running Random Forest Model"; }, 1900);
-                setTimeout(() => { if (s4) s4.innerHTML = "✅ Preparing Prediction Report"; }, 2600);
+                setTimeout(() => { if (s1) s1.innerHTML = "✅ [1/4] Symptom Vector Formatted"; }, 600);
+                setTimeout(() => { if (s2) s2.innerHTML = "⚡ [2/4] Querying 41-Disease Medical Matrix..."; }, 700);
+                setTimeout(() => { if (s2) s2.innerHTML = "✅ [2/4] Matrix Cross-Referenced"; }, 1400);
+                setTimeout(() => { if (s3) s3.innerHTML = "⚡ [3/4] Running Random Forest Engine..."; }, 1500);
+                setTimeout(() => { if (s3) s3.innerHTML = "✅ [3/4] Classification Complete"; }, 2200);
+                setTimeout(() => { if (s4) s4.innerHTML = "⚡ [4/4] Rendering Diagnostic HUD..."; }, 2300);
             }
 
             try {
@@ -190,19 +186,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
 
                 if (!response.ok) {
-                    throw new Error(`Server returned status ${response.status}`);
+                    throw new Error(`Server status ${response.status}`);
                 }
 
-                await new Promise(resolve => setTimeout(resolve, 1000));
+                await new Promise(resolve => setTimeout(resolve, 800));
 
                 const data = await response.json();
-                console.log("Prediction Success:", data);
-
                 displayResults(data);
             } catch (err) {
-                console.error("API Error:", err);
+                console.error("API Diagnostic Error:", err);
                 if (loadingSection) loadingSection.style.display = "none";
-                alert("Could not connect to Flask server. Please check the browser console for details.");
+                alert("⚠️ Could not reach Flask server node. Check network status or backend CORS.");
             }
         });
     }
@@ -216,7 +210,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 data.predicted_disease ||
                 data.disease ||
                 data.prediction ||
-                "Unknown Disease";
+                "Condition Unspecified";
         }
 
         const confidenceBadge = document.getElementById("confidenceBadge");
@@ -227,13 +221,13 @@ document.addEventListener("DOMContentLoaded", () => {
             confidenceBadge.style.display = "inline-flex";
         }
 
-        if (doctorNameElem) doctorNameElem.innerText = data.doctor || data.specialist || "General Physician";
-        if (dietPlanElem) dietPlanElem.innerText = data.diet || "Balanced, nutrient-dense diet with adequate hydration.";
-        if (descriptionElem) descriptionElem.innerText = data.description || "No specific description available.";
+        if (doctorNameElem) doctorNameElem.innerText = data.doctor || data.specialist || "General Practitioner";
+        if (dietPlanElem) dietPlanElem.innerText = data.diet || "Balanced, anti-inflammatory dietary plan.";
+        if (descriptionElem) descriptionElem.innerText = data.description || "Medical analysis parameters computed successfully.";
 
         if (precautionsListElem) {
             precautionsListElem.innerHTML = "";
-            const precautions = data.precautions || ["Consult a certified physician for medical assistance."];
+            const precautions = data.precautions || ["Consult a certified physician for immediate evaluation."];
             precautions.forEach(p => {
                 const li = document.createElement("li");
                 li.innerText = p;
@@ -244,9 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (resultSection) resultSection.scrollIntoView({ behavior: "smooth" });
     }
 
-    // ----------------------------------------------------------------------
-    // 5. RESET FUNCTIONALITY
-    // ----------------------------------------------------------------------
+    // 5. HUD RESET
     if (resetBtn) {
         resetBtn.addEventListener("click", () => {
             selectedSymptomsList = [];
@@ -258,22 +250,28 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // ----------------------------------------------------------------------
-    // 6. UI & NAVIGATION CONTROLS
-    // ----------------------------------------------------------------------
+    // 6. NAVIGATION & COUNTERS
     if (menuBtn && navLinks) {
         menuBtn.addEventListener("click", () => {
             navLinks.classList.toggle("active");
         });
+
+        // Auto close mobile navbar on click
+        document.querySelectorAll(".nav-links a").forEach(link => {
+            link.addEventListener("click", () => {
+                navLinks.classList.remove("active");
+            });
+        });
     }
 
     window.addEventListener("scroll", () => {
+        const header = document.querySelector("header");
+        if (header) {
+            header.classList.toggle("scrolled", window.scrollY > 40);
+        }
+
         if (scrollTopBtn) {
-            if (window.scrollY > 300) {
-                scrollTopBtn.style.display = "flex";
-            } else {
-                scrollTopBtn.style.display = "none";
-            }
+            scrollTopBtn.style.display = window.scrollY > 300 ? "flex" : "none";
         }
     });
 
@@ -300,9 +298,7 @@ document.addEventListener("DOMContentLoaded", () => {
         updateCount();
     });
 
-    // ----------------------------------------------------------------------
-    // 7. INITIALIZATION
-    // ----------------------------------------------------------------------
+    // 7. INITIAL RENDER
     renderSymptomList();
     renderSelectedSymptoms();
 });
