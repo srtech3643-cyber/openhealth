@@ -1,5 +1,5 @@
 /* ==========================================================================
-   MEDIPREDICT  - INTERACTIVE LOGIC & FLASK API INTEGRATION
+   MEDIPREDICT - INTERACTIVE LOGIC & FLASK API INTEGRATION
    ========================================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -52,7 +52,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const loadingSection = document.getElementById("loadingSection");
     const resultSection = document.getElementById("resultSection");
 
-    // Correct IDs mapping to HTML template
     const diseaseNameElem = document.getElementById("predictedDisease") || document.getElementById("diseaseName");
     const doctorNameElem = document.getElementById("recommendedDoctor") || document.getElementById("doctorName");
     const dietPlanElem = document.getElementById("recommendedDiet") || document.getElementById("dietPlan");
@@ -140,7 +139,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return name.replace(/_/g, " ").replace(/\b\w/g, char => char.toUpperCase());
     }
 
-    // Search filter listener
     if (symptomSearchInput) {
         symptomSearchInput.addEventListener("input", (e) => {
             renderSymptomList(e.target.value);
@@ -157,39 +155,34 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
-            // Show Loading Indicator
             if (resultSection) resultSection.style.display = "none";
             if (loadingSection) {
                 loadingSection.style.display = "block";
                 loadingSection.scrollIntoView({ behavior: "smooth" });
 
-                document.getElementById("step1").innerHTML = "⏳ Collecting Selected Symptoms...";
-                document.getElementById("step2").innerHTML = "⏳ Waiting...";
-                document.getElementById("step3").innerHTML = "⏳ Waiting...";
-                document.getElementById("step4").innerHTML = "⏳ Waiting...";
+                const s1 = document.getElementById("step1");
+                const s2 = document.getElementById("step2");
+                const s3 = document.getElementById("step3");
+                const s4 = document.getElementById("step4");
 
-                setTimeout(() => {
-                    document.getElementById("step1").innerHTML = "✅ Symptoms Collected";
-                }, 500);
+                if (s1) s1.innerHTML = "⏳ Collecting Selected Symptoms...";
+                if (s2) s2.innerHTML = "⏳ Waiting...";
+                if (s3) s3.innerHTML = "⏳ Waiting...";
+                if (s4) s4.innerHTML = "⏳ Waiting...";
 
-                setTimeout(() => {
-                    document.getElementById("step2").innerHTML = "✅ Comparing with 41 Diseases";
-                }, 1200);
-
-                setTimeout(() => {
-                    document.getElementById("step3").innerHTML = "✅ Running Random Forest Model";
-                }, 1900);
-
-                setTimeout(() => {
-                    document.getElementById("step4").innerHTML = "✅ Preparing Prediction Report";
-                }, 2600);
+                setTimeout(() => { if (s1) s1.innerHTML = "✅ Symptoms Collected"; }, 500);
+                setTimeout(() => { if (s2) s2.innerHTML = "✅ Comparing with 41 Diseases"; }, 1200);
+                setTimeout(() => { if (s3) s3.innerHTML = "✅ Running Random Forest Model"; }, 1900);
+                setTimeout(() => { if (s4) s4.innerHTML = "✅ Preparing Prediction Report"; }, 2600);
             }
 
             try {
                 const response = await fetch("https://openhealth-mqrg.onrender.com/predict", {
                     method: "POST",
+                    mode: "cors",
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
                     },
                     body: JSON.stringify({
                         symptoms: selectedSymptomsList
@@ -197,20 +190,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
 
                 if (!response.ok) {
-                    throw new Error("Server Error");
+                    throw new Error(`Server returned status ${response.status}`);
                 }
 
-                // Keep loading animation visible
-                await new Promise(resolve => setTimeout(resolve, 2000));
+                await new Promise(resolve => setTimeout(resolve, 1000));
 
                 const data = await response.json();
-                console.log("Prediction:", data);
+                console.log("Prediction Success:", data);
 
                 displayResults(data);
             } catch (err) {
-                console.error(err);
+                console.error("API Error:", err);
                 if (loadingSection) loadingSection.style.display = "none";
-                alert("Could not connect to Flask server.");
+                alert("Could not connect to Flask server. Please check the browser console for details.");
             }
         });
     }
@@ -227,7 +219,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 "Unknown Disease";
         }
 
-        // Display Confidence Score Badge
         const confidenceBadge = document.getElementById("confidenceBadge");
         const confidenceValue = document.getElementById("confidenceValue");
 
@@ -276,7 +267,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Scroll to Top Button Handler
     window.addEventListener("scroll", () => {
         if (scrollTopBtn) {
             if (window.scrollY > 300) {
@@ -293,7 +283,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Animated Counters for Stats
     const counters = document.querySelectorAll(".counter");
     counters.forEach(counter => {
         const updateCount = () => {
