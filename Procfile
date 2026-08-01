@@ -1,0 +1,1 @@
+web: gunicorn Disease_prediction_backend.api.app:app
