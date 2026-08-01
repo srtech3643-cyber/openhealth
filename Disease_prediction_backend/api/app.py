@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)  # <--- ADD THIS LINE RIGHT AFTER 'app = Flask(__name__)'
+CORS(app, resources={r"/*": {"origins": "*"}})  # <--- ADD THIS LINE RIGHT AFTER 'app = Flask(__name__)'
 
 @app.route('/predict', methods=['POST'])
 def predict():
