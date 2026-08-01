@@ -186,7 +186,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             try {
-                const response = await fetch("https://openhealth.onrender.com", {
+                const response = await fetch("https://openhealth-mqrg.onrender.com/predict", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json"
