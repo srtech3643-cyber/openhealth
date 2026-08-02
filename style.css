@@ -803,3 +803,45 @@ footer hr { border: none; height: 1px; background: rgba(255, 255, 255, 0.08); ma
     .menu-btn { display: block; }
     .footer-container { grid-template-columns: 1fr 1fr; }
 }
+/* --- Footer Styling Fixes --- */
+
+/* 1. Remove bullet dots and reset list styles */
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-col ul li {
+  margin-bottom: 8px;
+}
+
+/* 2. Fix link colors and remove underlines */
+.footer-col a {
+  color: #a0aec0; /* Soft gray text */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-col a:hover {
+  color: #00f2fe; /* Glowing cyan accent on hover */
+}
+
+/* 3. Space out social media icons horizontally */
+.social-links {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.social-links a {
+  color: #00f2fe;
+  font-size: 1.2rem;
+  text-decoration: none;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.social-links a:hover {
+  color: #ffffff;
+  transform: translateY(-2px);
+}
