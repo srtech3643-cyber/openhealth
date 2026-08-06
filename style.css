@@ -845,3 +845,40 @@ footer hr { border: none; height: 1px; background: rgba(255, 255, 255, 0.08); ma
   color: #ffffff;
   transform: translateY(-2px);
 }
+
+/* ==========================================
+   FULLSCREEN BACKGROUND VIDEO & OVERLAY
+   ========================================== */
+#bgVideo {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    z-index: -2; /* Sits behind text and overlays */
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    opacity: 0.65; /* Makes video brighter and clearer */
+    pointer-events: none;
+}
+
+.video-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(3, 7, 18, 0.4); /* Reduced dark tint so video pops */
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* TONE DOWN BLUE BACKGROUND ORBS & GLOWS */
+.gradient-bg, 
+.blur-one, 
+.blur-two, 
+.blur-three {
+    opacity: 0.08 !important; /* Reduces intensity of the blue glow orbs */
+}
