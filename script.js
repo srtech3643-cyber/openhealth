@@ -142,6 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // 4. ML DIAGNOSIS & FLASK API RUNNER
+    // 4. ML DIAGNOSIS & FLASK API RUNNER
     if (predictBtn) {
         predictBtn.addEventListener("click", async () => {
             if (selectedSymptomsList.length < 3) {
@@ -149,30 +150,45 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
 
+            // Hide previous results and show the loader
             if (resultSection) resultSection.style.display = "none";
             if (loadingSection) {
                 loadingSection.style.display = "block";
                 loadingSection.scrollIntoView({ behavior: "smooth" });
-
-                const s1 = document.getElementById("step1");
-                const s2 = document.getElementById("step2");
-                const s3 = document.getElementById("step3");
-                const s4 = document.getElementById("step4");
-
-                if (s1) s1.innerHTML = "⚡ [1/4] Scanning Symptom Neural Grid...";
-                if (s2) s2.innerHTML = "⏳ [2/4] Waiting...";
-                if (s3) s3.innerHTML = "⏳ [3/4] Waiting...";
-                if (s4) s4.innerHTML = "⏳ [4/4] Waiting...";
-
-                setTimeout(() => { if (s1) s1.innerHTML = "✅ [1/4] Symptom Vector Formatted"; }, 600);
-                setTimeout(() => { if (s2) s2.innerHTML = "⚡ [2/4] Querying 41-Disease Medical Matrix..."; }, 700);
-                setTimeout(() => { if (s2) s2.innerHTML = "✅ [2/4] Matrix Cross-Referenced"; }, 1400);
-                setTimeout(() => { if (s3) s3.innerHTML = "⚡ [3/4] Running Random Forest Engine..."; }, 1500);
-                setTimeout(() => { if (s3) s3.innerHTML = "✅ [3/4] Classification Complete"; }, 2200);
-                setTimeout(() => { if (s4) s4.innerHTML = "⚡ [4/4] Rendering Diagnostic HUD..."; }, 2300);
             }
 
+            // Elements for HUD animation
+            const progressBar = document.getElementById("progressBar");
+            const loadingPercent = document.getElementById("loadingPercent");
+            const loadingStatus = document.getElementById("loadingStatus");
+
+            // Diagnostic Status Messages
+            const statusLogs = [
+                "Initializing Neural Diagnostic Model...",
+                "Formatting Symptom Vector Matrix...",
+                "Querying 41-Disease Knowledge Core...",
+                "Running Random Forest ML Classifier...",
+                "Finalizing Diagnostic HUD Report..."
+            ];
+
+            // Start HUD Progress Animation
+            let progress = 0;
+            const progressInterval = setInterval(() => {
+                if (progress < 90) { // Hold at 90% until API responds
+                    progress += 2;
+                    if (progressBar) progressBar.style.width = `${progress}%`;
+                    if (loadingPercent) loadingPercent.innerText = progress;
+
+                    // Dynamically update status text based on progress stage
+                    if (progress === 20 && loadingStatus) loadingStatus.innerText = statusLogs[1];
+                    if (progress === 45 && loadingStatus) loadingStatus.innerText = statusLogs[2];
+                    if (progress === 70 && loadingStatus) loadingStatus.innerText = statusLogs[3];
+                    if (progress === 85 && loadingStatus) loadingStatus.innerText = statusLogs[4];
+                }
+            }, 50);
+
             try {
+                // Call Flask API Endpoint
                 const response = await fetch("https://openhealth-mqrg.onrender.com/predict", {
                     method: "POST",
                     mode: "cors",
@@ -189,11 +205,20 @@ document.addEventListener("DOMContentLoaded", () => {
                     throw new Error(`Server status ${response.status}`);
                 }
 
-                await new Promise(resolve => setTimeout(resolve, 800));
-
                 const data = await response.json();
-                displayResults(data);
+
+                // Fill progress bar to 100% on success
+                clearInterval(progressInterval);
+                if (progressBar) progressBar.style.width = "100%";
+                if (loadingPercent) loadingPercent.innerText = "100";
+
+                // Brief pause for visual impact before rendering results
+                setTimeout(() => {
+                    displayResults(data);
+                }, 400);
+
             } catch (err) {
+                clearInterval(progressInterval);
                 console.error("API Diagnostic Error:", err);
                 if (loadingSection) loadingSection.style.display = "none";
                 alert("⚠️ Could not reach Flask server node. Check network status or backend CORS.");
@@ -201,10 +226,11 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    function displayResults(data) {
+function displayResults(data) {
         if (loadingSection) loadingSection.style.display = "none";
         if (resultSection) resultSection.style.display = "block";
 
+        // 1. Disease Name
         if (diseaseNameElem) {
             diseaseNameElem.innerText =
                 data.predicted_disease ||
@@ -213,18 +239,33 @@ document.addEventListener("DOMContentLoaded", () => {
                 "Condition Unspecified";
         }
 
-        const confidenceBadge = document.getElementById("confidenceBadge");
-        const confidenceValue = document.getElementById("confidenceValue");
+        // 2. Extract Confidence
+        let rawConfidence = data.confidence !== undefined ? data.confidence : (data.accuracy || 95);
+        if (typeof rawConfidence === 'string') {
+            rawConfidence = parseFloat(rawConfidence.replace('%', ''));
+        }
+        const percent = Math.round(rawConfidence);
 
-        if (data.confidence !== undefined && confidenceBadge && confidenceValue) {
-            confidenceValue.innerText = `${data.confidence}%`;
-            confidenceBadge.style.display = "inline-flex";
+        // 3. Update Text Inside Circle
+        const gaugeValueText = document.getElementById("gaugeValueText");
+        if (gaugeValueText) {
+            gaugeValueText.innerText = percent;
         }
 
+        // 4. Animate Circular Ring
+        const circle = document.getElementById("gaugeCircle");
+        if (circle) {
+            const circumference = 2 * Math.PI * 42; // r=42 -> ~264
+            const offset = circumference - (percent / 100) * circumference;
+            circle.style.strokeDashoffset = offset;
+        }
+
+        // 5. Populate Metadata
         if (doctorNameElem) doctorNameElem.innerText = data.doctor || data.specialist || "General Practitioner";
         if (dietPlanElem) dietPlanElem.innerText = data.diet || "Balanced, anti-inflammatory dietary plan.";
         if (descriptionElem) descriptionElem.innerText = data.description || "Medical analysis parameters computed successfully.";
 
+        // 6. Precautions
         if (precautionsListElem) {
             precautionsListElem.innerHTML = "";
             const precautions = data.precautions || ["Consult a certified physician for immediate evaluation."];
